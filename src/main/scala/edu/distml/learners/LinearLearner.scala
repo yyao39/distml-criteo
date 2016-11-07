@@ -170,15 +170,16 @@ class LinearLearner(config: Config) extends MLLearner {
   def update_w(w : DenseVector[Double], xs : ListBuffer[mutable.HashMap[Int, Int]],
                ps : DenseVector[Double], ys : DenseVector[Double]) : DenseVector[Double] = {
     val delreg = 0
+    val update = DenseVector.zeros[Double](w.length)
     for(j <- 0 until ys.length) {
       for ((i, xi) <- xs(j)) {
         //delreg = (lambda1 * ((-1.) if w(i) < 0. else 1.) +lambda2 * wi])
         val delta = (ps(j) - ys(j)) * xi + delreg
         if (adapt > 0) g(i) += delta * delta
-        w(i) -= delta * alpha / Math.pow(sqrt(g(i)), adapt)
+        update(i) = delta * alpha / Math.pow(sqrt(g(i)), adapt)
       }
     }
-    w
+    update
   }
 
   def get_p(x: mutable.HashMap[Int, Int], w: DenseVector[Double]): Double = {

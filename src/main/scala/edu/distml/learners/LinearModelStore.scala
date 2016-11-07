@@ -30,7 +30,7 @@ class LinearModelStore(config: Config) extends ModelStore {
 
         //print("weights updated: \t")
         //println(sum(g))
-        model = g
+        model -= g
       //model -= g :* config.getDouble("sgd.learning-rate") // Add the model
         version += 1
 
