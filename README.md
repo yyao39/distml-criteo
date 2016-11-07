@@ -1,15 +1,6 @@
-# Akka implementation of Distributed SGD
+# Akka implementation of AdaGrad SGD on Criteo dataset
 
 First, build the simulator using SBT.
-
 ```
-sbt
-> compile
-> run
-```
-
-The configuration for the simulator is stored in
-
-```
-./src/main/resources/application.conf
+source run.sh
 ```
