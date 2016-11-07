@@ -134,10 +134,11 @@ class LinearLearner(config: Config) extends MLLearner {
     var num_line: Int = 0
 
     // main training procedure
+    // pitfall : slice() is linear complexity
     lazy val ys: DenseVector[Double] = labels(batch * logbatch until (batch + 1) * logbatch)
-    //ys : DenseVector[Double] = this.labels
     assert(ys.length == logbatch)
     lazy val ps = DenseVector.zeros[Double](logbatch)
+    // pitfall : slice() is linear complexity
     lazy val xs = features.slice(batch * logbatch, (batch + 1) * logbatch)
 
     for (num_line <- 0 until logbatch) {
@@ -179,6 +180,8 @@ class LinearLearner(config: Config) extends MLLearner {
         update(i) = delta * alpha / Math.pow(sqrt(g(i)), adapt)
       }
     }
+    // note : update in criteo case is very sparse
+    // maybe try to "compress" this vector in the future to reduce network load
     update
   }
 
